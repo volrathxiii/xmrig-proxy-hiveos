@@ -1,0 +1,26 @@
+name: Auto Release tar.gz
+
+on:
+  push:
+    tags:
+      - "v*"  # Trigger when you push a tag like v1.0.0
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create tar.gz archive
+        run: |
+          mkdir -p dist
+          tar -czvf dist/${{ github.repository }}-${{ github.ref_name }}.tar.gz *
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
