@@ -5,9 +5,6 @@ on:
     tags:
       - "v*"  # triggers only on version tags, e.g., v0.1, v1.0.0
 
-permissions:
-  contents: write  # required to allow GitHub Actions to create a release
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,19 +14,14 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Create dist directory
-        run: mkdir -p dist/xmrig-proxy-hiveos
-
-      - name: Copy HiveOS miner files
-        run: |
-          cp h-manifest.conf h-run.sh xmrig-proxy config.json dist/xmrig-proxy-hiveos/
+        run: mkdir -p dist
 
       - name: Archive HiveOS miner package
         run: |
           TAR_NAME="xmrig-proxy-hiveos.tar.gz"
           echo "Creating archive: dist/$TAR_NAME"
-          cd dist
-          tar -czvf "$TAR_NAME" xmrig-proxy-hiveos || exit 1
-          ls -l
+          tar -czvf "dist/$TAR_NAME" h-manifest.conf h-run.sh xmrig-proxy config.json || exit 1
+          ls -l dist
 
       - name: Generate checksums
         run: |
@@ -40,9 +32,6 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          make_latest: true
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
