@@ -18,7 +18,7 @@ jobs:
 
       - name: Archive HiveOS miner package
         run: |
-          TAR_NAME="${{ github.repository }}-${{ github.ref_name }}.tar.gz"
+          TAR_NAME="xmrig-proxy-hiveos.tar.gz"
           echo "Creating archive: dist/$TAR_NAME"
           tar -czvf "dist/$TAR_NAME" h-manifest.conf h-run.sh xmrig-proxy config.json || exit 1
           ls -l dist
