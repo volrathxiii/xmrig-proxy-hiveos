@@ -3,7 +3,7 @@ name: Auto Release tar.gz
 on:
   push:
     tags:
-      - "v*"  # Trigger when you push a tag like v1.0.0
+      - "v*"  # triggers only on version tags, e.g., v0.1, v1.0.0
 
 jobs:
   build:
@@ -13,14 +13,25 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Create tar.gz archive
+      - name: Create dist directory
+        run: mkdir -p dist
+
+      - name: Archive HiveOS miner package
         run: |
-          mkdir -p dist
-          tar -czvf dist/${{ github.repository }}-${{ github.ref_name }}.tar.gz *
+          TAR_NAME="${{ github.repository }}-${{ github.ref_name }}.tar.gz"
+          echo "Creating archive: dist/$TAR_NAME"
+          tar -czvf "dist/$TAR_NAME" h-manifest.conf h-run.sh xmrig-proxy config.json || exit 1
+          ls -l dist
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum *.tar.gz > SHA256SUMS
+          cat SHA256SUMS
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/*.tar.gz
+          files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
