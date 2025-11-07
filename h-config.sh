@@ -16,31 +16,85 @@ echo "---------------------------------------"
 
 # Example variables passed from HiveOS flight sheet (see note below)
 POOL_URL=${CUSTOM_URL:-"pool.minexmr.com:443"}
-WALLET=${CUSTOM_USER:-"YOUR_WALLET_ADDRESS"}
+WALLET=${CUSTOM_TEMPLATE:-"YOUR_WALLET_ADDRESS"}
 WORKER=${CUSTOM_WORKER:-"hiveos-worker"}
 EXTRA_ARGS=${CUSTOM_TEMPLATE:-""}
 
 cat > $CUSTOM_CONFIG_FILENAME <<EOF
 {
-  "autosave": true,
-  "background": false,
-  "colors": true,
-  "log-file": "$CUSTOM_LOG_FILE",
-  "retries": 5,
-  "retry-pause": 5,
-  "print-time": 60,
-  "syslog": false,
-  "threads": 1,
-  "pools": [
-    {
-      "url": "$POOL_URL",
-      "user": "$WALLET",
-      "pass": "$WORKER",
-      "keepalive": true,
-      "tls": true
-    }
-  ],
-  "custom_args": "$EXTRA_ARGS"
+    "access-log-file": null,
+    "access-password": null,
+    "algo-ext": true,
+    "api": {
+        "id": null,
+        "worker-id": null
+    },
+    "http": {
+        "enabled": false,
+        "host": "127.0.0.1",
+        "port": 0,
+        "access-token": null,
+        "restricted": true
+    },
+    "background": false,
+    "bind": [
+        {
+            "host": "0.0.0.0",
+            "port": 3333,
+            "tls": false
+        },
+        {
+            "host": "::",
+            "port": 3333,
+            "tls": false
+        }
+    ],
+    "colors": true,
+    "custom-diff": 0,
+    "custom-diff-stats": false,
+    "donate-level": 0,
+    "log-file": "$CUSTOM_LOG_FILE",
+    "mode": "nicehash",
+    "pools": [
+        {
+            "algo": null,
+            "coin": null,
+            "url": "$POOL_URL",
+            "user": "$WALLET",
+            "pass": "x",
+            "rig-id": null,
+            "keepalive": false,
+            "enabled": true,
+            "tls": false,
+            "sni": false,
+            "tls-fingerprint": null,
+            "daemon": false,
+            "socks5": null,
+            "self-select": null,
+            "submit-to-origin": false
+        }
+    ],
+    "retries": 2,
+    "retry-pause": 1,
+    "reuse-timeout": 0,
+    "tls": {
+        "enabled": true,
+        "protocols": null,
+        "cert": null,
+        "cert_key": null,
+        "ciphers": null,
+        "ciphersuites": null,
+        "dhparam": null
+    },
+    "dns": {
+        "ip_version": 0,
+        "ttl": 30
+    },
+    "user-agent": null,
+    "syslog": false,
+    "verbose": false,
+    "watch": true,
+    "workers": true
 }
 EOF
 
