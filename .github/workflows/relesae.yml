@@ -21,7 +21,7 @@ jobs:
 
       - name: Copy HiveOS miner files
         run: |
-          cp h-manifest.conf h-run.sh xmrig-proxy config.json dist/xmrig-proxy/
+          cp h-manifest.conf h-run.sh h-config.sh h-stats.sh xmrig-proxy config.json dist/xmrig-proxy/
 
       - name: Archive HiveOS miner package
         run: |
