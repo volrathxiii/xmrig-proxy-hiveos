@@ -57,8 +57,8 @@ cat > $CUSTOM_CONFIG_FILENAME <<EOF
     "mode": "nicehash",
     "pools": [
         {
-            "algo": null,
-            "coin": null,
+            "algo": "rx/0",
+            "coin": "XMR",
             "url": "$POOL_URL",
             "user": "$WALLET",
             "pass": "x",
